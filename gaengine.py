@@ -27,6 +27,11 @@ current population: {3}'''.format(
     def get_current_generation(self):
         return self.generations
     
+    def average_fitness(self):
+        fitness_list = [c.fitness() for c in self.populations]
+        return (sum(fitness_list) / self.gaConfig.n_populations)
+    
+    # breed next generation
     def next_generation(self, population):
         if len(population) < self.gaConfig.n_populations:
             print("invalid next generation")
@@ -98,8 +103,9 @@ current population: {3}'''.format(
             fitness_score = 0.0
             for i in range (self.gaConfig.selection.size):
                 selected_index = random.randint(0, (self.gaConfig.n_populations - 1))
-                if (fitness_score < self.populations[selected_index].fitness()):
-                    fitness_score = self.populations[selected_index].fitness()
+                selected_chromosome_fitness = self.populations[selected_index].fitness()
+                if (fitness_score <= selected_chromosome_fitness):
+                    fitness_score = selected_chromosome_fitness
                     fittest_chromosome = self.populations[selected_index]
             mating_pool.append(fittest_chromosome.chromosomes)
         return mating_pool

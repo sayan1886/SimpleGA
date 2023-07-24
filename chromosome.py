@@ -78,7 +78,11 @@ corresponding_value:    {2}'''.format(
         if (self.gaConfig.mutation.type == "bit-flip"):
             mutate_chromosome = self.__bit_flip_mutation__()
         elif (self.gaConfig.mutation.type == "swap"):
-            mutate_chromosome = self.__swap_mutation__()
+            if (self.gaConfig.mutation.bits % 2 == 0):
+                mutate_chromosome = self.__bit_swap_mutation__()
+            else:
+                print("invalid bit size for mutation")
+                exit()
         else:
             print("invalid mutation type")
             exit()
@@ -98,16 +102,17 @@ corresponding_value:    {2}'''.format(
         return offspring
         
     # bits must be even for swaping
-    def __swap_mutation__(self):
+    def __bit_swap_mutation__(self):
         offspring = self.chromosomes.copy()
         swap_positions = [0] * self.gaConfig.mutation.bits
         for i in range(self.gaConfig.mutation.bits):
             swap_positions[i] = random.randint(0, self.gaConfig.n_chromosomes - 1)
-        for i in range(len(swap_positions)):
+        i = 0
+        while i < len(swap_positions):
             bit = offspring[swap_positions[i]]
             offspring[swap_positions[i]] = offspring[swap_positions[i+1]]
             offspring[swap_positions[i+1]] = bit
-            i = i + 1
+            i = i + 2
         return offspring
     
     # produce a new offspring from 2 parents

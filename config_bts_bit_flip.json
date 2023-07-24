@@ -16,6 +16,6 @@
     "n_populations": 10,
     "selection": {
         "type": "tournament",
-        "size": "2"
+        "size": "3"
     }
 }
