@@ -4,25 +4,34 @@ from gaconfig import GAConfig
 from gaengine import GAEngine
 
 # plots the fitness over all generations using matplotlib.
-def fitness_plot_stats(fitness_plot):
+def fitness_plot_stats(fitness_plot, title):
+        plot_title = "Average Fitness for " + title
         plt.plot(fitness_plot)
-        plt.title('Average Fitness')
+        plt.title(plot_title)
         plt.ylabel('Fitness')
         plt.xlabel('Generations')
         plt.legend(['Fitness'], loc='lower right')
         plt.show()
 
 def selct_config(option):
+    file_name = "config_bts_bit_flip.json"
+    selected_option = "Binary Tournament Selection with Bit Flip Mutation"
     if option == "1":
-        return "config_bts_bit_flip.json"
+        file_name = "config_bts_bit_flip.json"
+        selected_option = "Binary Tournament Selection with Bit Flip Mutation"
     elif option == "2":
-        return "config_bts_bit_swap.json"
+        file_name = "config_bts_bit_swap.json"
+        selected_option = "Binary Tournament Selection with Bit Swap Mutation"
     elif option == "3":
-        return "config_roulette_bit_flip.json"
+        file_name = "config_roulette_bit_flip.json"
+        selected_option = "Roulette-Wheel Selection with Bit Flip Mutation"
     elif option == "4":
-        return "config_roulette_bit_swap.json"
+        file_name = "config_roulette_bit_swap.json"
+        selected_option = "Roulette-Wheel Selection with Bit Swap Mutation"
     else:
-        return "config_bts_bit_flip.json"
+        file_name = "config_bts_bit_flip.json"
+        selected_option = "Binary Tournament Selection with Bit Flip Mutation"
+    return file_name, selected_option
 
 if __name__ == '__main__':
     print("Simple Gentic Algorithm Config Selction:")
@@ -31,8 +40,7 @@ if __name__ == '__main__':
     print("3. Roulette-Wheel Selection with Bit Flip Mutation")
     print("4. Roulette-Wheel Selection with Bit Swap Mutation")
     option = input("Enter your choice: ")
-    config_file_name = selct_config(option)
-    print(config_file_name)
+    config_file_name, selected_option = selct_config(option)
     with open(config_file_name,'r') as file:
         configString = file.read()
     configJSON = json.loads(configString)
@@ -57,5 +65,5 @@ if __name__ == '__main__':
         gaEngine.totalPopulation += no_of_crossover
         fitness_plot.append(gaEngine.average_fitness())
     
-    fitness_plot_stats(fitness_plot)
+    fitness_plot_stats(fitness_plot, selected_option)
     print(gaEngine)
