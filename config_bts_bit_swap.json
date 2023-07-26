@@ -9,7 +9,8 @@
     "elitism":{
         "capacity" : 0.1
     },
-    "mutation_chances": 0.0,
+    "mutation_chances": 0.1,
+
     "mutation" :{
         "type": "swap",
         "bits": 2
