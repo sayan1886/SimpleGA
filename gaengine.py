@@ -31,6 +31,12 @@ current population: {3}'''.format(
         fitness_list = [c.fitness() for c in self.populations]
         return (sum(fitness_list) / self.gaConfig.n_populations)
     
+    def best_finess(self): 
+        fitness = 0 
+        for i in range(self.gaConfig.n_populations):
+            if fitness < self.populations[i].fitness():
+                fitness = self.populations[i].fitness()
+        return fitness
     # breed next generation
     def next_generation(self, population):
         if len(population) < self.gaConfig.n_populations:

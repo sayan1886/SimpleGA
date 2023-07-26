@@ -57,6 +57,7 @@ class Chromosome(Fitness):
     
     # calcualate x using 
     # x = min_boundary + max_boundary/(2^n_chromosome - 1) * encoded_chromosome
+    # y = y_min + (y_max - y_min) / x_max - x_min * (x - x_min)
     def __corresponding_value__(self):
         corresponding_value = ( int(self.gaConfig.boundary.min) + 
         ( float(self.gaConfig.boundary.max) / 

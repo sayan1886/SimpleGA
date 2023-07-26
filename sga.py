@@ -5,9 +5,8 @@ from gaengine import GAEngine
 
 # plots the fitness over all generations using matplotlib.
 def fitness_plot_stats(fitness_plot, title):
-        plot_title = "Average Fitness for " + title
         plt.plot(fitness_plot)
-        plt.title(plot_title)
+        plt.title(title)
         plt.ylabel('Fitness')
         plt.xlabel('Generations')
         plt.legend(['Fitness'], loc='lower right')
@@ -53,9 +52,9 @@ if __name__ == '__main__':
     gaEngine = GAEngine(gaConfig)
     gaEngine.make_initial_population()
     fitness_plot: list = []
+    avg_fitness = False
     fitness_plot.append(gaEngine.average_fitness())
     while  gaEngine.generations < gaConfig.generation_threshold:
-        gaEngine.do_selection()
         mating_pool = gaEngine.do_selection()
         next_gen = gaEngine.do_crossover(mating_pool)
         gaEngine.next_generation(next_gen)
@@ -63,7 +62,15 @@ if __name__ == '__main__':
         gaEngine.change_genration()
         no_of_crossover = int(gaConfig.n_populations * gaConfig.crossover_chances)
         gaEngine.totalPopulation += no_of_crossover
-        fitness_plot.append(gaEngine.average_fitness())
-    
-    fitness_plot_stats(fitness_plot, selected_option)
+        if avg_fitness:
+            fitness_plot.append(gaEngine.average_fitness())
+        else:
+            fitness_plot.append(gaEngine.best_finess())
+            
+    title = "Best Fitness for "
+    if avg_fitness:
+        title = "Average Fitness for "        
+        
+    plot_title = title + selected_option
+    fitness_plot_stats(fitness_plot, plot_title)
     print(gaEngine)
