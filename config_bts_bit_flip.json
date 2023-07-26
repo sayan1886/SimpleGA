@@ -6,7 +6,9 @@
     "crossover_chances": 0.6,
     "crossover_type" : "single",
     "generation_threshold": 50,
-    "objective": "max",
+    "elitism":{
+        "capacity" : 0.1
+    },
     "mutation_chances": 0.1,
     "mutation" :{
         "type": "bit-flip",
@@ -14,6 +16,8 @@
     },
     "n_chromosomes": 8,
     "n_populations": 100,
+    "objective": "max",
+    "plot_type": "avg",
     "selection": {
         "type": "tournament",
         "size": "3"

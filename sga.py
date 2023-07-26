@@ -52,7 +52,6 @@ if __name__ == '__main__':
     gaEngine = GAEngine(gaConfig)
     gaEngine.make_initial_population()
     fitness_plot: list = []
-    avg_fitness = False
     fitness_plot.append(gaEngine.average_fitness())
     while  gaEngine.generations < gaConfig.generation_threshold:
         mating_pool = gaEngine.do_selection()
@@ -62,15 +61,16 @@ if __name__ == '__main__':
         gaEngine.change_genration()
         no_of_crossover = int(gaConfig.n_populations * gaConfig.crossover_chances)
         gaEngine.totalPopulation += no_of_crossover
-        if avg_fitness:
+        if gaConfig.plot_type == "avg":
             fitness_plot.append(gaEngine.average_fitness())
-        else:
+        elif gaConfig.plot_type == "best":
             fitness_plot.append(gaEngine.best_finess())
             
     title = "Best Fitness for "
-    if avg_fitness:
+    if gaConfig.plot_type == "avg":
         title = "Average Fitness for "        
-        
-    plot_title = title + selected_option
-    fitness_plot_stats(fitness_plot, plot_title)
+    
+    if(len(fitness_plot) > 0):
+        plot_title = title + selected_option
+        fitness_plot_stats(fitness_plot, plot_title)
     print(gaEngine)
