@@ -49,7 +49,7 @@ class GAConfig:
     crossover_chances: float
     crossover_type: str
     generation_threshold: int
-    elitism: Elitism
+    elitism: Any
     mutation_chances: float
     mutation: Mutation
     n_chromosomes: int
@@ -63,7 +63,8 @@ class GAConfig:
         _boundary = Boundary.from_dict(obj.get("boundary"))
         _crossover_chances = float(obj.get("crossover_chances"))
         _crossover_type = str(obj.get("crossover_type"))
-        _elitism = Elitism.from_dict(obj.get("elitism"))
+        _elitism = Elitism.from_dict(
+                    obj.get("elitism")) if obj.get("elitism") is not None else None
         _generation_threshold = int(obj.get("generation_threshold"))
         _mutation_chances = float(obj.get("mutation_chances"))
         _mutation = Mutation.from_dict(obj.get("mutation"))
@@ -74,7 +75,7 @@ class GAConfig:
         _selection = Selection.from_dict(obj.get("selection"))
         return GAConfig(boundary=_boundary, crossover_chances=_crossover_chances, 
                         crossover_type=_crossover_type,generation_threshold=_generation_threshold, 
-                        elitism=_elitism,mutation=_mutation, 
+                        elitism=_elitism, mutation=_mutation, 
                         mutation_chances=_mutation_chances,n_chromosomes=_n_chromosomes, 
                         n_populations=_n_populations,objective=_objective, 
                         plot_type=_plot_type ,selection=_selection)

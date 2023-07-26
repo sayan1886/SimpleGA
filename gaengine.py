@@ -37,13 +37,30 @@ current population: {3}'''.format(
             if fitness < self.populations[i].fitness():
                 fitness = self.populations[i].fitness()
         return fitness
+    
+    def create_elite_group(self):
+        # sort the solutions in descending order of fitness
+        current_generation = sorted(self.populations, key=lambda x: x.fitness(), 
+                                    reverse=True)
+        n_elite_generation = int(self.gaConfig.n_populations * 
+                                 self.gaConfig.elitism.capacity)
+        elite_generation = []
+        for i in range(n_elite_generation):
+            elite_generation.append(current_generation[i])
+        return elite_generation
+    
     # breed next generation
     def next_generation(self, population):
-        if len(population) < self.gaConfig.n_populations:
+        next_gen = []
+        n_elite_generation = 0 
+        if self.gaConfig.elitism:
+            n_elite_generation = int(self.gaConfig.n_populations * 
+                                 self.gaConfig.elitism.capacity)
+            next_gen = self.create_elite_group().copy()
+        if len(population) < self.gaConfig.n_populations - n_elite_generation:
             print("invalid next generation")
             exit()
-        next_gen = []
-        for i in range (self.gaConfig.n_populations):
+        for i in range (self.gaConfig.n_populations - n_elite_generation):
             next_gen.append(Chromosome(self.gaConfig, population[i]))
         self.next_gen = next_gen.copy()
         
@@ -73,13 +90,13 @@ current population: {3}'''.format(
     def __roulte_wheel_selection__(self):
         mating_pool = []
         # sort the solutions in descending order of fitness
-        current_population = sorted(self.populations, key=lambda x: x.fitness(), 
+        current_generation = sorted(self.populations, key=lambda x: x.fitness(), 
                                     reverse=True)
         # sum of the fitness score
-        fitness_sum = self.__calculate_fitness_sum__(current_population)
+        fitness_sum = self.__calculate_fitness_sum__(current_generation)
         fitness_score = []
         for i in range (len(self.populations)):
-            fitness_score.append(current_population[i].fitness())
+            fitness_score.append(current_generation[i].fitness())
         
         # generate weighted probabilty 
         probabilities = [round((float)(value)/fitness_sum,4) for value in fitness_score]
@@ -93,13 +110,13 @@ current population: {3}'''.format(
             for i in probabilities:
                 choose = choose + probabilities[i]
                 if choose <= randomNumber:
-                    mating_pool.append(current_population[i].chromosomes)
+                    mating_pool.append(current_generation[i].chromosomes)
         return mating_pool
     
-    def __calculate_fitness_sum__(self, current_population):
+    def __calculate_fitness_sum__(self, current_generation):
         sum = 0
-        for i in range(len(current_population)):
-            sum += current_population[i].fitness()
+        for i in range(len(current_generation)):
+            sum += current_generation[i].fitness()
         return sum
     
     def __tournament_selection__(self):
@@ -120,13 +137,19 @@ current population: {3}'''.format(
         # Get top fittest
         no_of_crossover = int(self.gaConfig.n_populations * 
                               self.gaConfig.crossover_chances)
-        keep_nr = self.gaConfig.n_populations - no_of_crossover
+        no_elite = 0
+        if self.gaConfig.elitism:
+            no_elite = int(self.gaConfig.n_populations * 
+                                 self.gaConfig.elitism.capacity)
+            
+        # move chromosome to next generation intact for mutation
+        keep_next = self.gaConfig.n_populations - no_of_crossover - no_elite
         # sort the solutions in descending order of fitness
-        current_population = sorted(self.populations, key=lambda x: x.fitness(), 
+        current_generation = sorted(self.populations, key=lambda x: x.fitness(), 
                                     reverse=True)
         next_generation = []
-        for i in range (keep_nr):
-            next_generation.append(current_population[i].chromosomes)
+        for i in range (keep_next):
+            next_generation.append(current_generation[i].chromosomes)
         for i in range (no_of_crossover):
             parent1, parent2 = random.choices(mating_pool, k=2)
             parent1_chromosome = Chromosome(self.gaConfig, parent1)
