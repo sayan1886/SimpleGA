@@ -1,4 +1,4 @@
-# import math
+import math
 import random
 from abc import ABC, abstractproperty, abstractmethod
 
@@ -163,7 +163,10 @@ corresponding_value:    {2}'''.format(
     # calculate fitness for the degree of goodness of the encoded solution
     # fitness will be based on the equation f(x) = x(8 – x)
     def __evaluate_fitness__(self):
-        return self.corresponding_value * (8 - self.corresponding_value)
+        # return self.corresponding_value * (8 - self.corresponding_value)
+        if (self.corresponding_value == 0):
+            return 0
+        return math.sin(self.corresponding_value) / self.corresponding_value
     
     # get fitness 
     def fitness(self):

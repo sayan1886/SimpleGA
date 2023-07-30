@@ -179,7 +179,8 @@ current population: {3}'''.format(
                 if (fitness_score <= selected_chromosome_fitness):
                     fitness_score = selected_chromosome_fitness
                     fittest_chromosome = self.populations[selected_index]
-            mating_pool.append(fittest_chromosome.chromosomes)
+            if selected_chromosome_fitness >= 0:
+                mating_pool.append(fittest_chromosome.chromosomes)
         return mating_pool
     
     # crossover using mating pool and fill next generation
