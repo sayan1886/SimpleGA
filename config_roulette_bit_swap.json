@@ -19,7 +19,6 @@
     "objective": "max",
     "plot_type": "avg",
     "selection": {
-        "type": "tournament",
-        "size": "2"
+        "type": "roulette_wheel"
     }
 }

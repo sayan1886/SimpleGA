@@ -40,7 +40,7 @@ class Selection:
     @staticmethod
     def from_dict(obj: Any) -> 'Selection':
         _type = str(obj.get("type"))
-        _size = int(obj.get("size"))
+        _size = int(obj.get("size")) if obj.get("size") is not None else 0
         return Selection(_type, _size)
 
 @dataclass

@@ -1,15 +1,23 @@
 import json
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt # type: ignore
 from gaconfig import GAConfig
-from gaengine import GAEngine
+from gaengine import GAEngine 
 
 # plots the fitness over all generations using matplotlib.
-def fitness_plot_stats(fitness_plot, title):
-        plt.plot(fitness_plot)
+def fitness_plot_stats(avg_fitness_plot, best_fitness_plot, title):
+        if len(avg_fitness_plot) > 0 :
+            plt.plot(avg_fitness_plot, label="avg")
+        if len(best_fitness_plot) > 0 :
+            plt.plot(best_fitness_plot, label="best")
         plt.title(title)
         plt.ylabel('Fitness')
         plt.xlabel('Generations')
-        plt.legend(['Fitness'], loc='lower right')
+        if gaConfig.plot_type == "avg":
+            plt.legend(['Average Fitness'], loc='lower right')
+        elif gaConfig.plot_type == "best":
+            plt.legend(['Best Fitness'], loc='lower right')
+        else:
+            plt.legend(['Average Fitness', 'Best Fitness'], loc='lower right')
         plt.show()
 
 def selct_config(option):
@@ -51,8 +59,17 @@ if __name__ == '__main__':
             exit()
     gaEngine = GAEngine(gaConfig)
     gaEngine.make_initial_population()
-    fitness_plot: list = []
-    fitness_plot.append(gaEngine.average_fitness())
+    avg_fitness_plot: list = []
+    best_fitness_plot: list = []
+    
+    if gaConfig.plot_type == "avg":
+        avg_fitness_plot.append(gaEngine.average_fitness())
+    elif gaConfig.plot_type == "best":
+        best_fitness_plot.append(gaEngine.best_finess())
+    else:
+        avg_fitness_plot.append(gaEngine.average_fitness())
+        best_fitness_plot.append(gaEngine.best_finess())
+        
     while  gaEngine.generations < gaConfig.generation_threshold:
         mating_pool = gaEngine.do_selection()
         next_gen = gaEngine.do_crossover(mating_pool)
@@ -61,16 +78,24 @@ if __name__ == '__main__':
         gaEngine.change_genration()
         no_of_crossover = int(gaConfig.n_populations * gaConfig.crossover_chances)
         gaEngine.totalPopulation += no_of_crossover
+
         if gaConfig.plot_type == "avg":
-            fitness_plot.append(gaEngine.average_fitness())
+            avg_fitness_plot.append(gaEngine.average_fitness())
         elif gaConfig.plot_type == "best":
-            fitness_plot.append(gaEngine.best_finess())
-            
-    title = "Best Fitness for "
-    if gaConfig.plot_type == "avg":
-        title = "Average Fitness for "        
+            best_fitness_plot.append(gaEngine.best_finess())
+        else:
+            avg_fitness_plot.append(gaEngine.average_fitness())
+            best_fitness_plot.append(gaEngine.best_finess())
     
-    if(len(fitness_plot) > 0):
-        plot_title = title + selected_option
-        fitness_plot_stats(fitness_plot, plot_title)
     print(gaEngine)
+    title = "Fitness for "
+    if gaConfig.plot_type == "avg":
+        title = "Average Fitness for "
+    if gaConfig.plot_type == "best":
+        title = "Best Fitness for "   
+        
+    plot_title = title + selected_option
+    fitness_plot_stats(avg_fitness_plot=avg_fitness_plot,
+                       best_fitness_plot=best_fitness_plot
+                       ,title=plot_title)
+    
