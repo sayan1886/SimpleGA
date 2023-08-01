@@ -1,7 +1,7 @@
 {
     "boundary": {
-        "min": 0,
-        "max": 8
+        "min": -5.12,
+        "max": 5.12
     },
     "crossover_chances": 0.6,
     "crossover_type" : "single",
@@ -15,7 +15,7 @@
         "bits": 2
     },
     "n_chromosomes": 8,
-    "n_populations": 100,
+    "n_populations": 4,
     "objective": "max",
     "plot_type": "both",
     "selection": {

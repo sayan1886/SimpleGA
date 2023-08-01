@@ -1,7 +1,7 @@
-import math
 import random
 from abc import ABC, abstractproperty, abstractmethod
 
+#interface need to implemneted by chromosome to get fitness value 
 class Fitness(ABC):
     @abstractmethod
     def __evaluate_fitness__(self):
@@ -10,14 +10,15 @@ class Fitness(ABC):
     @abstractproperty
     def fitness(self):
         '''fitness score for current chromosome/offspring'''
-
+        
+# chromosome structure where chromosome represenst a single unit of bianry 
+# string encoded to integer value 
 class Chromosome(Fitness):
-    # initialize a new chromozome with 
-    # chromosome length 
-    # chromosome array of binary string only applicable for 
-    # crossover and mutation where we have chromosoem alreay 
-    # defined otherwise it will be blank __init__ will populate for 
-    # initial population
+    # initialize a new chromozome with chromosome length 
+    # chromosome array of binary string only applicable for defined 
+    # crossover and mutation where we have chromosome already 
+    # otherwise it should be empty 
+    # __init__ will populate for initial population
     def __init__(self, gaConfig, chromosomes = []) -> None:
         super.__init__
         self.gaConfig = gaConfig
@@ -36,7 +37,7 @@ class Chromosome(Fitness):
         return chromosome
     
         
-    # encode chromosome(bianry string array) to integaer value
+    # encode chromosome(binary string array) to integer value
     def __encode_chromosome__(self):
         # convert binary list to string
         binary_string = ''.join(map(str, self.chromosomes))
@@ -44,7 +45,7 @@ class Chromosome(Fitness):
         encoded_chromosome = int(binary_string, 2) 
         return encoded_chromosome
         
-    # decode  integaer value to chromosome(bianry string array)
+    # decode integer value to chromosome(binary string array)
     def __decode_chromosome__(self, encoded_chromosome):
         # convert to binary string
         binary_string = '{0:0b}'.format(encoded_chromosome)
@@ -55,14 +56,17 @@ class Chromosome(Fitness):
             decoded_chromosome[i] = int(self.gaConfig.n_chromosomes[i], 2)
         return decoded_chromosome
     
-    # calcualate x using 
-    # x = min_boundary + max_boundary/(2^n_chromosome - 1) * encoded_chromosome
-    # y = y_min + (y_max - y_min) / x_max - x_min * (x - x_min)
+    # calcualate corresponding gene value using interpolation
+    # where y_min = config.bounday.min y_max = config.bounday.min
+    # x_max = 2^chormosomeLength - 1 and x_min = 0
+    # x will encoded chromosoem value
+    # y = y_min + (y_max - y_min) / (x_max - x_min) * (x - x_min)
     def __corresponding_value__(self):
-        corresponding_value = ( int(self.gaConfig.boundary.min) + 
-        ( float(self.gaConfig.boundary.max) / 
-         ( 2 ** float(self.gaConfig.n_chromosomes) - 1 ) ) 
-        * int(self.encoded_chromosome))
+        # corresponding_value = ( int(self.gaConfig.boundary.min) + 
+        corresponding_value = (self.gaConfig.boundary.min + 
+                        ((self.gaConfig.boundary.max - self.gaConfig.boundary.min) / 
+                        (2 ** self.gaConfig.n_chromosomes - 1) - 0) * 
+                        (self.encoded_chromosome - self.gaConfig.boundary.min))
         return corresponding_value
             
     def __str__(self):
@@ -163,10 +167,10 @@ corresponding_value:    {2}'''.format(
     # calculate fitness for the degree of goodness of the encoded solution
     # fitness will be based on the equation f(x) = x(8 – x)
     def __evaluate_fitness__(self):
-        # return self.corresponding_value * (8 - self.corresponding_value)
-        if (self.corresponding_value == 0):
-            return 0
-        return math.sin(self.corresponding_value) / self.corresponding_value
+        return self.corresponding_value * (8 - self.corresponding_value)
+        # if (self.corresponding_value == 0):
+        #     return 0
+        # return math.sin(self.corresponding_value) / self.corresponding_value
     
     # get fitness 
     def fitness(self):
