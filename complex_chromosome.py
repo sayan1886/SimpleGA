@@ -19,7 +19,7 @@ class ComplexChromosome(Chromosome):
     def __str__(self):
         chromosome = []
         for i in range(self.n_gene):
-            gene = ''.join(str(x) for x in self.chromosomes)
+            gene = ''.join(str(x) for x in self.chromosomes[i])
             chromosome.append(gene)
             
         return '''
