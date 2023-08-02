@@ -93,19 +93,23 @@ corresponding_value:    {2}'''.format(
             exit()
         return mutate_chromosome
     
+    # bit flip mutation done by choosing random position of chromosome
+    # and fliping the bit
     def __bit_flip_mutation__(self):
         offspring = self.chromosomes.copy()
         flip_positions = [0] * self.gaConfig.mutation.bits
         for i in range(self.gaConfig.mutation.bits):
             flip_positions[i] = random.randint(0, self.gaConfig.n_chromosomes - 1)
         for i in range(len(flip_positions)):
-            bit = offspring[flip_positions[i]]
+            pos = flip_positions[i]
+            bit = offspring[pos]
             if bit == 0:
-                offspring[flip_positions[i]] = 1
+                offspring[pos] = 1
             else:
-                offspring[flip_positions[i]] = 0
+                offspring[pos] = 0
         return offspring
         
+    # bit swap mutation done by swaping the value at given bit position of chromosome
     # bits must be even for swaping
     def __bit_swap_mutation__(self):
         offspring = self.chromosomes.copy()
@@ -132,8 +136,8 @@ corresponding_value:    {2}'''.format(
             exit()
         return offspring
     
-    # cross over to creat one offspring from twp parents 
-    # using single point crossover return two new offsprings 
+    # cross over to creat one offspring from two parents 
+    # using single point crossover return new offspring(s) 
     def __single_point_crossover__(self, other):
         offspring_1 = [0] * self.gaConfig.n_chromosomes
         # offspring_2 = [0] * self.gaConfig.n_chromosomes
@@ -147,10 +151,10 @@ corresponding_value:    {2}'''.format(
                 # offspring_2[i] = other.chromosomes[i]
         return offspring_1 #, offspring_2
     
-    # cross over to creat one offspring from twp parents 
-    # using single point crossover
+    # crossover to creat one offspring from two parents 
+    # using uniform crossover
     # create a random mask and based on mask[i] value will be
-    #will consider single offspring from parent
+    # will consider single offspring from parent
     def __uniform_crossover__(self, other):
         offspring_1 = [0] * self.gaConfig.n_chromosomes
         # offspring_2 = [0] * self.gaConfig.n_chromosomes

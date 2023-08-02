@@ -1,10 +1,12 @@
+import random
 from gaengine import GAEngine
 from complex_chromosome import ComplexChromosome
 
 class ComplexGAEngine(GAEngine):
     
-    def __init__(self, gaConfig) -> None:
+    def __init__(self, gaConfig, n_gene) -> None:
         super().__init__(gaConfig)
+        self.n_gene = n_gene
 
     def __str__(self):
         init_population = ''.join(str(x) for x in self.init_populations)
@@ -19,7 +21,57 @@ current population: {3}'''.format(
     # create initial population
     def make_initial_population(self):       
         for i in range(self.gaConfig.n_populations):
-            self.populations.append(ComplexChromosome(gaConfig=self.gaConfig))
+            self.populations.append(ComplexChromosome(gaConfig=self.gaConfig, 
+                                    n_gene=self.n_gene))
             self.init_populations = self.populations.copy()
         # create elite populations if any
         self.__create_elite_group__()
+        
+    # breed next generation
+    def next_generation(self, population):
+        next_gen = []
+        # check for valid next gen
+        if len(population) < self.gaConfig.n_populations:
+            print("invalid next generation")
+            exit()
+        for i in range (self.gaConfig.n_populations):
+            next_gen.append(ComplexChromosome(self.gaConfig, 
+                            population[i], self.n_gene))
+        self.next_gen = next_gen.copy()
+        
+    # crossover using mating pool and fill next generation
+    def do_crossover(self, mating_pool):     
+        # get total population except elits
+        population = self.gaConfig.n_populations
+        # Get no of crossover required 
+        no_of_crossover = int(population * self.gaConfig.crossover_chances)
+            
+        # get top fittest chromosome to next generation intact for mutation
+        keep_next = population - no_of_crossover
+        # sort the solutions in descending order of fitness
+        current_generation = sorted(self.populations, key=lambda x: x.fitness(), 
+                                    reverse=True)
+        next_generation = []
+        for i in range (keep_next):
+            next_generation.append(current_generation[i].chromosomes)
+        for i in range (no_of_crossover):
+            parent1, parent2 = random.choices(mating_pool, k=2)
+            parent1_chromosome = ComplexChromosome(self.gaConfig, parent1, self.n_gene)
+            parent2_chromosome = ComplexChromosome(self.gaConfig, parent2, self.n_gene)
+            next_generation.append(parent1_chromosome.crossover(parent2_chromosome))
+        return next_generation
+    
+    # implemnet mutation on next generation breeds 
+    def do_mutation(self):
+        # get elite group count if any
+        no_elite = self.get_elite_population()
+        # get total population except elits
+        population = int(self.gaConfig.n_populations - no_elite)
+        
+        no_of_mutation = int(population * self.gaConfig.mutation_chances)
+        # mutate only chromosome we got from mating pool
+        for i in range (no_of_mutation):
+            random_index = random.randint(0, population -  1)
+            chromosome = self.next_gen[random_index]
+            self.next_gen[random_index] = ComplexChromosome(self.gaConfig,
+                                        chromosome.mutate(), self.n_gene)

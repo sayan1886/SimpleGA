@@ -94,12 +94,12 @@ current population: {3}'''.format(
         elites = self.elite_group
         # compare elite and next gen
         for i in range(len(elites)):
-            chromosome_wrost = sorted(self.next_gen, key=lambda x: x.fitness(), 
+            chromosome_worst = sorted(self.next_gen, key=lambda x: x.fitness(), 
                                     reverse=False)
             # check elite generation is superior than next gen
-            for j in range(len(chromosome_wrost)):
+            for j in range(len(chromosome_worst)):
                 # found a spot for insert elite gen and remove next gen member
-                if chromosome_wrost[j].fitness() < elites[i].fitness():
+                if chromosome_worst[j].fitness() < elites[i].fitness():
                     # elite gen is superior than any chromosome in next gen
                     # remove weakest and add chromosome for elite gen
                     weakest_chromosome = self.__weakest_chromosome_in__(self.next_gen)
