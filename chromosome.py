@@ -176,6 +176,11 @@ corresponding_value:    {2}'''.format(
         #     return 0
         # return math.sin(self.corresponding_value) / self.corresponding_value
     
-    # get fitness 
+    # get fitness score for each chromosome 
+    # need to convert minimize objective problem to 
+    # maximize objective problem by 1 / objective 
     def fitness(self):
-        return self.__evaluate_fitness__()
+        if self.gaConfig.objective == "max":
+            return self.__evaluate_fitness__()
+        else:
+            return 1 / self.__evaluate_fitness__()

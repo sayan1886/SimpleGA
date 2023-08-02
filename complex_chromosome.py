@@ -208,10 +208,3 @@ corresponding_value:    {2}'''.format(
             x_i = self.corresponding_value[i]
             sum += x_i ** 2
         return sum
-    
-    # get fitness score for each chromosome 
-    # need to convert minimize objective problem to 
-    # maximize objective problem by 1 / objective 
-    def fitness(self):
-        return 1 / self.__evaluate_fitness__()
-
