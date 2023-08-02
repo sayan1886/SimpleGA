@@ -5,7 +5,7 @@
     },
     "crossover_chances": 0.6,
     "crossover_type" : "single",
-    "generation_threshold": 100,
+    "generation_threshold": 1000,
     "elitism":{
         "capacity" : 0.1
     },

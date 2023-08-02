@@ -2,7 +2,26 @@ import random
 from gaengine import GAEngine
 from complex_chromosome import ComplexChromosome
 
-class ComplexGAEngine(GAEngine):
+# benchmark problem on spehre
+# Sphere => f(x) = sumation ( {i=1  to p} x_i^2 )
+# x_i in [-5.12, 5.12]				
+# x^* = (0,0,...,0); f(x^*) = 0
+class Sphere(ComplexChromosome):
+    
+        def __init__(self, gaConfig, chromosomes=[], n_gene=3) -> None:
+             super().__init__(gaConfig, chromosomes, n_gene)
+             
+        # calculate fitness for the degree of goodness of the encoded solution
+        # fitness will be based on the equation f{x} = sum_of {i=1-p} x_i^2
+        # where p is no of dimension we set it to number of gene
+        def __evaluate_fitness__(self):
+            sum = 0
+            for i in range(self.n_gene):
+                x_i = self.corresponding_value[i]
+                sum += x_i ** 2
+            return sum
+
+class SphereGAEngine(GAEngine):
     
     def __init__(self, gaConfig, n_gene) -> None:
         super().__init__(gaConfig)
@@ -21,9 +40,10 @@ current population: {3}'''.format(
     # create initial population
     def make_initial_population(self):       
         for i in range(self.gaConfig.n_populations):
-            self.populations.append(ComplexChromosome(gaConfig=self.gaConfig, 
+            self.populations.append(Sphere(gaConfig=self.gaConfig, 
                                     n_gene=self.n_gene))
             self.init_populations = self.populations.copy()
+            
         # create elite populations if any
         self.__create_elite_group__()
         
@@ -35,7 +55,7 @@ current population: {3}'''.format(
             print("invalid next generation")
             exit()
         for i in range (self.gaConfig.n_populations):
-            next_gen.append(ComplexChromosome(self.gaConfig, 
+            next_gen.append(Sphere(self.gaConfig, 
                             population[i], self.n_gene))
         self.next_gen = next_gen.copy()
         
@@ -56,8 +76,8 @@ current population: {3}'''.format(
             next_generation.append(current_generation[i].chromosomes)
         for i in range (no_of_crossover):
             parent1, parent2 = random.choices(mating_pool, k=2)
-            parent1_chromosome = ComplexChromosome(self.gaConfig, parent1, self.n_gene)
-            parent2_chromosome = ComplexChromosome(self.gaConfig, parent2, self.n_gene)
+            parent1_chromosome = Sphere(self.gaConfig, parent1, self.n_gene)
+            parent2_chromosome = Sphere(self.gaConfig, parent2, self.n_gene)
             next_generation.append(parent1_chromosome.crossover(parent2_chromosome))
         return next_generation
     
@@ -73,5 +93,5 @@ current population: {3}'''.format(
         for i in range (no_of_mutation):
             random_index = random.randint(0, population -  1)
             chromosome = self.next_gen[random_index]
-            self.next_gen[random_index] = ComplexChromosome(self.gaConfig,
+            self.next_gen[random_index] = Sphere(self.gaConfig,
                                         chromosome.mutate(), self.n_gene)

@@ -200,11 +200,5 @@ corresponding_value:    {2}'''.format(
         return offspring
         
     # calculate fitness for the degree of goodness of the encoded solution
-    # fitness will be based on the equation f{x} = sum_of {i=1-p} x_i^2
-    # where p is no of dimension we set it to number of gene
     def __evaluate_fitness__(self):
-        sum = 0
-        for i in range(self.n_gene):
-            x_i = self.corresponding_value[i]
-            sum += x_i ** 2
-        return sum
+        'need to implement in descendants'
