@@ -3,13 +3,13 @@ from dataclasses import dataclass
 
 @dataclass
 class Boundary:
-    min: int
-    max: int
+    min: float
+    max: float
 
     @staticmethod
     def from_dict(obj: Any) -> 'Boundary':
-        _min = int(obj.get("min"))
-        _max = int(obj.get("max"))
+        _min = float(obj.get("min"))
+        _max = float(obj.get("max"))
         return Boundary(_min, _max)
     
 @dataclass
@@ -53,6 +53,7 @@ class GAConfig:
     mutation_chances: float
     mutation: Mutation
     n_chromosomes: int
+    n_gene: int
     n_populations: int
     objective: str
     plot_type: str
@@ -69,14 +70,18 @@ class GAConfig:
         _mutation_chances = float(obj.get("mutation_chances"))
         _mutation = Mutation.from_dict(obj.get("mutation"))
         _n_chromosomes = int(obj.get("n_chromosomes"))
+        _n_gene = int(obj.get("n_gene"))
         _n_populations = int(obj.get("n_populations"))
         _objective = str(obj.get("objective"))
         _plot_type = str(obj.get("plot_type"))
         _selection = Selection.from_dict(obj.get("selection"))
-        return GAConfig(boundary=_boundary, crossover_chances=_crossover_chances, 
-                        crossover_type=_crossover_type,generation_threshold=_generation_threshold, 
+        return GAConfig(boundary=_boundary, 
+                        crossover_chances=_crossover_chances, 
+                        crossover_type=_crossover_type,
+                        generation_threshold=_generation_threshold, 
                         elitism=_elitism, mutation=_mutation, 
-                        mutation_chances=_mutation_chances,n_chromosomes=_n_chromosomes, 
+                        mutation_chances=_mutation_chances,
+                        n_chromosomes=_n_chromosomes, n_gene= _n_gene,
                         n_populations=_n_populations,objective=_objective, 
                         plot_type=_plot_type ,selection=_selection)
 

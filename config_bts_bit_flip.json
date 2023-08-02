@@ -1,11 +1,11 @@
 {
     "boundary": {
-        "min": 0,
-        "max": 8
+        "min": -5.12,
+        "max": 5.12
     },
     "crossover_chances": 0.6,
     "crossover_type" : "single",
-    "generation_threshold": 50,
+    "generation_threshold": 1000,
     "elitism":{
         "capacity" : 0.1
     },
@@ -15,8 +15,9 @@
         "bits": 2
     },
     "n_chromosomes": 8,
+    "n_gene" : 30,
     "n_populations": 100,
-    "objective": "max",
+    "objective": "min",
     "plot_type": "both",
     "selection": {
         "type": "tournament",
