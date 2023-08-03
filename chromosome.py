@@ -129,7 +129,7 @@ corresponding_value:    {2}'''.format(
         offspring = None
         if (self.gaConfig.crossover_type == "single"):
             offspring = self.__single_point_crossover__(other)
-        elif (self.gaConfig.selection == "uniform"):
+        elif (self.gaConfig.crossover_type == "uniform"):
             offspring = self.__uniform_crossover__(other)
         else:
             print("invalid crossover type")
@@ -177,10 +177,10 @@ corresponding_value:    {2}'''.format(
         # return math.sin(self.corresponding_value) / self.corresponding_value
     
     # get fitness score for each chromosome 
-    # need to convert minimize objective problem to 
-    # maximize objective problem by 1 / objective 
+    # need to convert minimize objective problem to maximize objective 
+    # problem by multiplying -1 with objective function 
     def fitness(self):
         if self.gaConfig.objective == "max":
             return self.__evaluate_fitness__()
         else:
-            return 1 / self.__evaluate_fitness__()
+            return -1 * self.__evaluate_fitness__()

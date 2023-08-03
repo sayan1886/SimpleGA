@@ -5,7 +5,6 @@
     },
     "crossover_chances": 0.6,
     "crossover_type" : "single",
-    "generation_threshold": 1000,
     "elitism":{
         "capacity" : 0.1
     },
@@ -14,8 +13,9 @@
         "type": "bit-flip",
         "bits": 2
     },
-    "n_chromosomes": 8,
+    "n_chromosomes": 16,
     "n_gene" : 30,
+    "n_generation": 1000,
     "n_populations": 100,
     "objective": "min",
     "plot_type": "both",
