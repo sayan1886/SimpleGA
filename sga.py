@@ -1,7 +1,7 @@
 import json
 import matplotlib.pyplot as plt # type: ignore
 from gaconfig import GAConfig
-from sphere import Sphere, SphereGAEngine
+from sphere import SphereGAEngine
 
 # plots the fitness over all generations using matplotlib.
 def fitness_plot_stats(avg_fitness_plot, best_fitness_plot, title):
@@ -71,7 +71,7 @@ if __name__ == '__main__':
         avg_fitness_plot.append(gaEngine.average_fitness())
         best_fitness_plot.append(gaEngine.best_finess())
         
-    while  gaEngine.generations < gaConfig.generation_threshold:
+    while  gaEngine.generations < gaConfig.n_generation:
         mating_pool = gaEngine.do_selection()
         next_gen = gaEngine.do_crossover(mating_pool)
         gaEngine.next_generation(next_gen)

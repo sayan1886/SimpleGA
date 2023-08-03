@@ -98,7 +98,7 @@ current population: {3}'''.format(
                                     reverse=False)
             # check elite generation is superior than next gen
             for j in range(len(chromosome_worst)):
-                # found a spot for insert elite gen and remove next gen member
+                # found a spot for inserting elite gen and remove next gen member
                 if chromosome_worst[j].fitness() < elites[i].fitness():
                     # elite gen is superior than any chromosome in next gen
                     # remove weakest and add chromosome for elite gen
@@ -172,7 +172,7 @@ current population: {3}'''.format(
         mating_pool = []
         while (len(mating_pool) < (self.gaConfig.n_populations)):
             fittest_chromosome = None
-            fitness_score = 0.0
+            fitness_score = -999999999999999 
             for i in range (self.gaConfig.selection.size):
                 selected_index = random.randint(0, (self.gaConfig.n_populations - 1))
                 selected_chromosome_fitness = self.populations[selected_index].fitness()
