@@ -1,7 +1,7 @@
 import json
-import matplotlib.pyplot as plt
-from configs.gaconfig import GAConfig
-import gaengine.sphereengine as sphereengine
+import matplotlib.pyplot as plt # type: ignore
+from simplega import gaconfig
+from simplega import boothengine 
 
 # plots the fitness over all generations using matplotlib.
 def fitness_plot_stats(avg_fitness_plot, best_fitness_plot, title):
@@ -21,22 +21,23 @@ def fitness_plot_stats(avg_fitness_plot, best_fitness_plot, title):
         plt.show()
 
 def selct_config(option):
-    file_name = "configs/config_bts_bit_flip.json"
+    root_dir = gaconfig.get_simplega()
+    file_name = root_dir + "/configs/config_bts_bit_flip.json"
     selected_option = "Binary Tournament Selection with Bit Flip Mutation"
     if option == "1":
-        file_name = "configs/config_bts_bit_flip.json"
+        file_name = root_dir + "/configs/config_bts_bit_flip.json"
         selected_option = "Binary Tournament Selection with Bit Flip Mutation"
     elif option == "2":
-        file_name = "configs/config_bts_bit_swap.json"
+        file_name = root_dir + "/configs/config_bts_bit_swap.json"
         selected_option = "Binary Tournament Selection with Bit Swap Mutation"
     elif option == "3":
-        file_name = "configs/config_roulette_bit_flip.json"
+        file_name = root_dir +  "/configs/config_roulette_bit_flip.json"
         selected_option = "Roulette-Wheel Selection with Bit Flip Mutation"
     elif option == "4":
-        file_name = "configs/config_roulette_bit_swap.json"
+        file_name = root_dir +  "/configs/config_roulette_bit_swap.json"
         selected_option = "Roulette-Wheel Selection with Bit Swap Mutation"
     else:
-        file_name = "configs/config_bts_bit_flip.json"
+        file_name = root_dir +  "/configs/config_bts_bit_flip.json"
         selected_option = "Binary Tournament Selection with Bit Flip Mutation"
     return file_name, selected_option
 
@@ -51,13 +52,14 @@ if __name__ == '__main__':
     with open(config_file_name,'r') as file:
         configString = file.read()
     configJSON = json.loads(configString)
-    gaConfig = GAConfig.from_dict(configJSON)
+    gaConfig = gaconfig.GAConfig.from_dict(configJSON)
     # print(gaConfig)
     if gaConfig.selection.type == "tournament":
         if gaConfig.selection.size >= gaConfig.n_populations:
             print("tournament selction size should be less than population size")
             exit()
-    gaEngine = sphereengine.SphereGAEngine(gaConfig, n_gene=gaConfig.n_gene)
+    # gaEngine = sphereengine.SphereGAEngine(gaConfig, n_gene=gaConfig.n_gene)
+    gaEngine = boothengine.BoothGAEngine(gaConfig, n_gene=gaConfig.n_gene)
     gaEngine.make_initial_population()
     
     avg_fitness_plot: list = []

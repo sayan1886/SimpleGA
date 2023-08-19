@@ -1,4 +1,4 @@
-from chromosome.complexchromosome import ComplexChromosome
+from simplega.chromosome.complexchromosome import ComplexChromosome
 
 # benchmark problem on spehre
 # Sphere => f(x) = sumation ( {i=1  to p} x_i^2 )

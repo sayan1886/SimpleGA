@@ -169,12 +169,8 @@ corresponding_value:    {2}'''.format(
         return offspring_1 #, offspring_2
     
     # calculate fitness for the degree of goodness of the encoded solution
-    # fitness will be based on the equation f(x) = x(8 – x)
     def __evaluate_fitness__(self):
-        return self.corresponding_value * (8 - self.corresponding_value)
-        # if (self.corresponding_value == 0):
-        #     return 0
-        # return math.sin(self.corresponding_value) / self.corresponding_value
+        'need to implement in descendants'
     
     # get fitness score for each chromosome 
     # need to convert minimize objective problem to maximize objective 

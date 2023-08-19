@@ -1,4 +1,4 @@
-from chromosome.chromosome import Chromosome
+from simplega.chromosome.chromosome import Chromosome
 import random
 
 # complex chromosome structure where gene represnts a single unit of bianry 

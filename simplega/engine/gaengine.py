@@ -1,6 +1,6 @@
 from random import uniform
 import random
-from chromosome.chromosome import Chromosome
+from simplega.chromosome.chromosome import Chromosome # type: ignore
 
 class GAEngine:
     def __init__(self, gaConfig) -> None:
@@ -110,8 +110,6 @@ current population: {3}'''.format(
                 else:
                     print("next gen supeior than elite")
 
-            
-        
     # set next generation as current generation
     def change_genration(self):
         self.generations += 1
@@ -173,7 +171,7 @@ current population: {3}'''.format(
         while (len(mating_pool) < (self.gaConfig.n_populations)):
             fittest_chromosome = None
             fitness_score = -999999999999999 
-            for i in range (self.gaConfig.selection.size):
+            for i in range (self.gaConfig.selection.size - 1):
                 selected_index = random.randint(0, (self.gaConfig.n_populations - 1))
                 selected_chromosome_fitness = self.populations[selected_index].fitness()
                 if (fitness_score <= selected_chromosome_fitness):

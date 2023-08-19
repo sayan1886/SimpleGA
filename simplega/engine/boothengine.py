@@ -1,8 +1,9 @@
 import random
-from gaengine.gaengine import GAEngine
-from chromosome.sphere import Sphere
+from simplega.engine.gaengine import GAEngine # type: ignore
+from simplega.chromosome.booth import Booth # type: ignore
 
-class SphereGAEngine(GAEngine):
+
+class BoothGAEngine(GAEngine):
     
     def __init__(self, gaConfig, n_gene) -> None:
         super().__init__(gaConfig)
@@ -21,7 +22,7 @@ current population: {3}'''.format(
     # create initial population
     def make_initial_population(self):       
         for i in range(self.gaConfig.n_populations):
-            self.populations.append(Sphere(gaConfig=self.gaConfig, 
+            self.populations.append(Booth(gaConfig=self.gaConfig, 
                                     n_gene=self.n_gene))
             self.init_populations = self.populations.copy()
             
@@ -36,7 +37,7 @@ current population: {3}'''.format(
             print("invalid next generation")
             exit()
         for i in range (self.gaConfig.n_populations):
-            next_gen.append(Sphere(self.gaConfig, 
+            next_gen.append(Booth(self.gaConfig, 
                             population[i], self.n_gene))
         self.next_gen = next_gen.copy()
         
@@ -57,8 +58,8 @@ current population: {3}'''.format(
             next_generation.append(current_generation[i].chromosomes)
         for i in range (no_of_crossover):
             parent1, parent2 = random.choices(mating_pool, k=2)
-            parent1_chromosome = Sphere(self.gaConfig, parent1, self.n_gene)
-            parent2_chromosome = Sphere(self.gaConfig, parent2, self.n_gene)
+            parent1_chromosome = Booth(self.gaConfig, parent1, self.n_gene)
+            parent2_chromosome = Booth(self.gaConfig, parent2, self.n_gene)
             next_generation.append(parent1_chromosome.crossover(parent2_chromosome))
         return next_generation
     
@@ -74,5 +75,5 @@ current population: {3}'''.format(
         for i in range (no_of_mutation):
             random_index = random.randint(0, population -  1)
             chromosome = self.next_gen[random_index]
-            self.next_gen[random_index] = Sphere(self.gaConfig,
+            self.next_gen[random_index] = Booth(self.gaConfig,
                                         chromosome.mutate(), self.n_gene)
