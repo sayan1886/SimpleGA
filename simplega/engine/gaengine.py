@@ -1,6 +1,6 @@
 from random import uniform
 import random
-from chromosome.chromosome import Chromosome
+from simplega.chromosome.chromosome import Chromosome # type: ignore
 
 class GAEngine:
     def __init__(self, gaConfig) -> None:

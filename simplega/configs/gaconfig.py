@@ -1,5 +1,8 @@
 from typing import Any
 from dataclasses import dataclass
+from os.path import dirname, realpath
+
+from simplega.version import __version__
 
 @dataclass
 class Boundary:
@@ -86,3 +89,15 @@ class GAConfig:
                         plot_type=_plot_type ,selection=_selection)
 
 
+class Config:
+    """
+    The configuration of this package in general providing the place
+    for declaring global variables.
+    """
+
+    # the root directory where the package is located at
+    root = dirname(realpath(__file__))
+    
+# returns the directory to be used for imports
+def get_simplega():
+    return dirname(Config.root)
