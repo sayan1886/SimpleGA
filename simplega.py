@@ -1,7 +1,7 @@
 import json
 import matplotlib.pyplot as plt
 from configs.gaconfig import GAConfig
-import gaengine.sphereengine as sphereengine
+import gaengine.boothengine as sphereengine
 
 # plots the fitness over all generations using matplotlib.
 def fitness_plot_stats(avg_fitness_plot, best_fitness_plot, title):
@@ -57,7 +57,8 @@ if __name__ == '__main__':
         if gaConfig.selection.size >= gaConfig.n_populations:
             print("tournament selction size should be less than population size")
             exit()
-    gaEngine = sphereengine.SphereGAEngine(gaConfig, n_gene=gaConfig.n_gene)
+    # gaEngine = sphereengine.SphereGAEngine(gaConfig, n_gene=gaConfig.n_gene)
+    gaEngine = sphereengine.BoothGAEngine(gaConfig, n_gene=gaConfig.n_gene)
     gaEngine.make_initial_population()
     
     avg_fitness_plot: list = []

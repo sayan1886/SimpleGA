@@ -1,9 +1,9 @@
 {
     "boundary": {
-        "min": -5.12,
-        "max": 5.12
+        "min": -10,
+        "max": 10
     },
-    "crossover_chances": 0.6,
+    "crossover_chances": 0.7,
     "crossover_type" : "single",
     "elitism":{
         "capacity" : 0.1
@@ -13,9 +13,9 @@
         "type": "bit-flip",
         "bits": 2
     },
-    "n_chromosomes": 16,
-    "n_gene" : 30,
-    "n_generation": 1000,
+    "n_chromosomes": 8,
+    "n_gene" : 2,
+    "n_generation": 100,
     "n_populations": 100,
     "objective": "min",
     "plot_type": "both",
