@@ -1,4 +1,4 @@
-# Simple Gentic Algorithm (SGA)
+# Simple Genetic Algorithm (SGA)
 
 ## Prerequisite
 
